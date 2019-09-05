@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: example
+  annotations:
+    flux.weave.works/automated: "true"
 spec:
   containers:
     - name: busybox
