@@ -1,61 +1,29 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  creationTimestamp: null
-  labels:
-    app: jenkins-test2-master
-  ownerReferences:
-  - apiVersion: apps/v1
-    blockOwnerDeletion: true
-    controller: true
-    kind: ReplicaSet
-    name: jenkins-test2-master
-  selfLink: /api/v1/namespaces/jenkins/pods/jenkins-test2-master
+  name: example
 spec:
   containers:
-  - env:
-    - name: JENKINS_SEC_OPTS
-      valueFrom:
-        secretKeyRef:
-          key: secret_options
-          name: jenkins
-    - name: JENKINS_OPTS
-      value: --prefix=/test2
-    - name: JENKINS_URL
-      value: https://helm-master.hpeswlab.net/test2
-    - name: JENKINS_URL_FOR_KUBERNETES
-      value: http://jenkins-test2-master-ui.jenkins.svc.cluster.local:8080/test2/
-    - name: JNLP_PORT
-      value: "33001"
-    image: itom-docker-devops.suoartifactory.swinfra.net/ci-farm/itom-jenkins:2.0
-    imagePullPolicy: IfNotPresent
-    name: jenkins-test2-master
-    ports:
-    - containerPort: 8080
-      name: test2-ui
-      protocol: TCP
-    - containerPort: 33001
-      name: test2-jnlp
-      protocol: TCP
-    readinessProbe:
-      failureThreshold: 5
-      httpGet:
-        path: /test2/login
-        port: 8080
-        scheme: HTTP
-      periodSeconds: 10
-      successThreshold: 2
-      timeoutSeconds: 5
-    resources: {}
-    terminationMessagePath: /dev/termination-log
-    terminationMessagePolicy: File
-  priority: 0
-  restartPolicy: Always
-  schedulerName: default-scheduler
-  securityContext: {}
-  serviceAccount: default
-  serviceAccountName: default
-  terminationGracePeriodSeconds: 30
-status:
-  phase: Pending
-  qosClass: BestEffort
+    - name: busybox
+      image: busybox:1.25
+      volumeMounts:
+        - name: quobytevolume
+          mountPath: /persistent
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          if [ -f /persistent/log ]; then
+            echo -n "Found old state starting at "; head -n1 /persistent/log
+          else
+            echo -n "Starting with a fresh state"
+          fi
+          while sleep 5; do date | tee -a /persistent/log; done
+  volumes:
+  - name: quobytevolume
+    quobyte:
+      registry: ignored:7861
+      volume: testVolume
+      readOnly: false
+      user: root
+      group: root
