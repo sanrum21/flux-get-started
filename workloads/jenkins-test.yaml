@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -15,24 +16,24 @@ spec:
         app: jenkins-test
     spec:
       containers:
-        - name: jenkins-test
-          image: itom-devops-dockertest.svsartifactory.swinfra.net/hack-fest19/hackfest-jenkins/jenkins:2.60.1
-          env:
-            - name: JENKINS_OPTS
-              value: "--prefix=/jenkins"
-            - name: JAVA_OPTS
-              value: "-Djenkins.install.runSetupWizard=false"
-          ports:
-            - name: http-port
-              containerPort: 8080
-            - name: jnlp-port
-              containerPort: 50000
-          resources:
-            requests:
-              cpu: 500m
-              memory: 2Gi
-            limits:
-              memory: 12Gi
+      - name: jenkins-test
+        image: itom-devops-dockertest.svsartifactory.swinfra.net/hack-fest19/hackfest-jenkins/jenkins:2.60.2
+        env:
+        - name: JENKINS_OPTS
+          value: "--prefix=/jenkins"
+        - name: JAVA_OPTS
+          value: "-Djenkins.install.runSetupWizard=false"
+        ports:
+        - name: http-port
+          containerPort: 8080
+        - name: jnlp-port
+          containerPort: 50000
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            memory: 12Gi
 ---
 apiVersion: v1
 kind: Service
