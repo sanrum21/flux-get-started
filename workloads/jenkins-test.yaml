@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: jenkins-test
-        image: itom-devops-dockertest.svsartifactory.swinfra.net/hack-fest19/hackfest-jenkins/jenkins:2.60.2
+        image: itom-devops-dockertest.svsartifactory.swinfra.net/hack-fest19/hackfest-jenkins/jenkins:2.60.3
         env:
         - name: JENKINS_OPTS
           value: "--prefix=/jenkins"
