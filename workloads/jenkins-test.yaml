@@ -48,5 +48,5 @@ spec:
   - name: http
     port: 36001
     targetPort: 8080
-    nodePort: 8180
+    nodePort: 30000
     protocol: TCP
